@@ -29,7 +29,15 @@
                 </table>
 
                 <div class="card-footer d-flex justify-content-center">
-
+                    <nav id="paginator">
+                        <ul class="pagination">
+{{--                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>--}}
+{{--                            <li class="page-item"><a class="page-link" href="#">1</a></li>--}}
+{{--                            <li class="page-item"><a class="page-link" href="#">2</a></li>--}}
+{{--                            <li class="page-item"><a class="page-link" href="#">3</a></li>--}}
+{{--                            <li class="page-item"><a class="page-link" href="#">Next</a></li>--}}
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -157,20 +165,26 @@
             });
         });
 
-        carregarContatos();
+        carregarContatos(1);
+
     });
 
-    function carregarContatos() {
-        $.getJSON('/contact', function (data) {
+    function carregarContatos(pagina) {
+        $('#tbody').html('');
+        $.getJSON('/contact/json', {page: pagina}, function (data) {
             if (data) {
-                data.forEach(function (contact) {
-                    carregarContato(contact)
+                data.data.forEach(function (contact) {
+                    montaLinha(contact);
+                    montarPaginator(data);
+                    $("#paginator>ul>li>a").click(function(){
+                        carregarContatos($(this).attr('pagina'));
+                    })
                 });
             }
         });
     }
 
-    function carregarContato(contact) {
+    function montaLinha(contact) {
         let tableLine = `<tr id="tr${contact.id}">
                     <th scope="row">${contact.id}</th>
                         <td>${contact.name}</td>
@@ -181,6 +195,55 @@
                         <button class="btn btn-danger btn-sm" onclick="removerContato('${contact.id}')"  title="Excluir ${contact.name}"><i class="fas fa-times"></i> Excluir</button></td>
                     </tr>`;
         $('#tbody').append(tableLine)
+    }
+
+    function getItemAnterior(data) {
+        i = data.current_page -1;
+        if (1 == data.current_page)
+            s= '<li class="page-item active disabled">';
+        else
+            s= '<li class="page-item">';
+        s += '<a class="page-link" '+ ' pagina="' + i +'" href="javascript:void(0)">Anterior</a></li>';
+        return s;
+    }
+    
+    function getItemProximo(data) {
+        i = data.current_page +1;
+        if(data.last_page == data.current_page)
+            s= '<li class="page-item disabled">';
+        else
+            s= '<li class="page-item">';
+        s += '<a class="page-link" '+ ' pagina="' + i +'" href="javascript:void(0)">Proximo</a></li>';
+        return s;
+    }
+    
+    function getItem(data, i) {
+        if (i == data.current_page)
+            s= '<li class="page-item active">';
+        else
+            s= '<li class="page-item">';
+        s += '<a class="page-link" '+ ' pagina="' + i +'" href="javascript:void(0)">' + i + '</a></li>';
+        return s;
+    }
+
+    function montarPaginator(data) {
+        $('#paginator>ul>li').remove();
+        $('#paginator>ul').append(getItemAnterior(data));
+
+        n = 10;
+        if(data.current_page - n/2 <= 1)
+            inicio = 1;
+        else if (data.last_page - data.current_page < n)
+            inicio = data.last_page - n + 1
+        else
+            inicio = data.current_page - n/2;
+        inicio = 1;
+        fim = data.last_page <= inicio + n - 1 ? data.last_page : inicio + n - 1;
+        for(i=1;i<=fim;i++) {
+            s = getItem(data, i);
+            $('#paginator>ul').append(s)
+        }
+        $('#paginator>ul').append(getItemProximo(data));
     }
 
     $('#novoContato').click(function (e) {
@@ -264,7 +327,7 @@
             _token: '{{ csrf_token() }}'
         };
         $.post('/contact', contact, function (data) {
-            carregarContato(JSON.parse(data));
+            montaLinha(JSON.parse(data));
         });
     }
 
@@ -311,7 +374,8 @@
             }
         });
     }
-    
+
+
 
 </script>
 @endsection

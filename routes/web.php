@@ -16,5 +16,6 @@
 //});
 
 Route::get('/', 'ContactController@indexView')->name('contact.indexview');
+Route::get('/contact/json', 'ContactController@indexJson')->name('contact.indexview');
 
 Route::resource('/contact', 'ContactController')->names('contact');

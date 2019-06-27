@@ -18,6 +18,12 @@ class ContactController extends Controller
         return $contacts->toJson();
     }
 
+    public function indexJson()
+    {
+        $contacts = Contact::paginate(1);
+        return $contacts->toJson();
+    }
+
     public function indexView()
     {
         return view('contacts');
