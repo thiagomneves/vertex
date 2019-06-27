@@ -18,6 +18,9 @@
 @include('layouts.header')
 @yield('content')
 
+@hassection('modal')
+    @yield('modal')
+@endif
 <script src="{{asset('js/app.js')}}"></script>
 
 @hassection('javascript')

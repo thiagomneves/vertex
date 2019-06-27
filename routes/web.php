@@ -15,4 +15,6 @@
 //    return view('welcome');
 //});
 
-Route::resource('/', 'ContactController')->names('contact');
+Route::get('/', 'ContactController@indexView')->name('contact.indexview');
+
+Route::resource('/contact', 'ContactController')->names('contact');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Contact;
 
 class ContactController extends Controller
 {
@@ -12,6 +13,12 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+    {
+        $contacts = Contact::all();
+        return $contacts->toJson();
+    }
+
+    public function indexView()
     {
         return view('contacts');
     }
@@ -34,7 +41,21 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $contact = new Contact();
+        $contact->name = $request->input('name');
+        $contact->phone = $request->input('phone');
+        $contact->email = $request->input('email');
+        $contact->cep = $request->input('cep');
+        $contact->street = $request->input('street');
+        $contact->number = $request->input('number');
+        $contact->complement = $request->input('complement');
+        $contact->district = $request->input('district');
+        $contact->city = $request->input('city');
+        $contact->state = $request->input('state');
+
+        $contact->save();
+
+        return $contact->toJson();
     }
 
     /**
@@ -45,7 +66,8 @@ class ContactController extends Controller
      */
     public function show($id)
     {
-        //
+        $contact = Contact::find($id);
+        return $contact->toJson();
     }
 
     /**
@@ -57,6 +79,7 @@ class ContactController extends Controller
     public function edit($id)
     {
         //
+        return $id;
     }
 
     /**
@@ -68,7 +91,24 @@ class ContactController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $contact = Contact::find($id);
+        if (isset($contact)) {
+            $contact->name = $request->input('name');
+            $contact->phone = $request->input('phone');
+            $contact->email = $request->input('email');
+            $contact->cep = $request->input('cep');
+            $contact->street = $request->input('street');
+            $contact->number = $request->input('number');
+            $contact->complement = $request->input('complement');
+            $contact->district = $request->input('district');
+            $contact->city = $request->input('city');
+            $contact->state = $request->input('state');
+
+            $contact->save();
+
+            return $contact->toJson();
+        }
+        return response('Contato não encontrado, 404');
     }
 
     /**
@@ -79,6 +119,11 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $contact = Contact::find($id);
+        if (isset($contact)) {
+            $contact->delete();
+            return response('OK', 200);
+        }
+        return response('Contato não encontrado', 404);
     }
 }
