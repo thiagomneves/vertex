@@ -19,12 +19,12 @@ class CreateContactsTable extends Migration
             $table->string('phone');
             $table->string('email');
             $table->string('cep');
-            $table->string('street');
-            $table->string('number');
-            $table->string('complement');
-            $table->string('district');
-            $table->string('city');
-            $table->string('state');
+            $table->string('street')->nullable();
+            $table->string('number')->nullable();
+            $table->string('complement')->nullable();
+            $table->string('district')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
             $table->timestamps();
         });
     }

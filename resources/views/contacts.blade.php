@@ -10,6 +10,14 @@
             </div>
 
             <div class="card-body">
+
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Library</li>
+                    </ol>
+                </nav>
+
                 <div class="d-flex justify-content-between mb-3">
                     <div>
                         <a id="novoContato" class="btn btn-primary btn-sm" href=""><i class="fas fa-plus"></i> Novo</a>
@@ -61,42 +69,42 @@
 
                         <div class="row">
 
-                            <div class="col-12 col-md-6">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label for="name">Nome</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nome">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nome" required>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="phone">Telefone</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Telefone">
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="E-mail">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Telefone" required>
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="cep">CEP</label>
-                                    <input type="text" class="form-control" id="cep" name="cep" placeholder="CEP">
+                                    <input type="text" class="form-control" id="cep" name="cep" placeholder="CEP" required>
                                 </div>
                             </div>
 
-                            <div class="col-12 col-md-6">
+                            <div class="col-9">
                                 <div class="form-group">
                                     <label for="street">Logradouro</label>
                                     <input type="text" class="form-control" id="street" name="street" placeholder="Logradouro">
                                 </div>
                             </div>
 
-                            <div class="col-12 col-md-6">
+                            <div class="col-3">
                                 <div class="form-group">
                                     <label for="number">Número</label>
                                     <input type="text" class="form-control" id="number" name="number" placeholder="Número">

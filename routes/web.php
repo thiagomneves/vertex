@@ -15,7 +15,10 @@
 //    return view('welcome');
 //});
 
-Route::get('/', 'ContactController@indexView')->name('contact.indexview');
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+Route::get('/contacts', 'ContactController@indexView')->name('contacts');
 Route::get('/contact/json', 'ContactController@indexJson')->name('contact.indexJson');
 Route::get('/contact/jsonSearch/{search}', 'ContactController@indexJsonSearch')->name('contact.indexJsonSearch');
 
