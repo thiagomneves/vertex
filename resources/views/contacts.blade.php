@@ -6,15 +6,20 @@
 
         <div class="card mt-3">
             <div class="card-header d-flex justify-content-between">
-                <h1 class="card-title">Contatos</h1>
-                <div>
-                    <a id="novoContato" class="btn btn-primary" href=""><i class="fas fa-plus"></i> Novo</a>
-                </div>
+                <h3 class="card-title">Contatos</h3>
             </div>
 
             <div class="card-body">
-                <table class="table table-hover">
-                    <thead class="thead-light">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <a id="novoContato" class="btn btn-primary btn-sm" href=""><i class="fas fa-plus"></i> Novo</a>
+                    </div>
+                    <form id="searchForm">
+                        <input class="form-control" name="search" id="search" type="text" placeholder="Buscar">
+                    </form>
+                </div>
+                <table class="table table-hover table-sm">
+                    <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nome</th>
@@ -31,11 +36,6 @@
                 <div class="card-footer d-flex justify-content-center">
                     <nav id="paginator">
                         <ul class="pagination">
-{{--                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>--}}
-{{--                            <li class="page-item"><a class="page-link" href="#">1</a></li>--}}
-{{--                            <li class="page-item"><a class="page-link" href="#">2</a></li>--}}
-{{--                            <li class="page-item"><a class="page-link" href="#">3</a></li>--}}
-{{--                            <li class="page-item"><a class="page-link" href="#">Next</a></li>--}}
                         </ul>
                     </nav>
                 </div>
@@ -170,18 +170,34 @@
     });
 
     function carregarContatos(pagina) {
-        $('#tbody').html('');
-        $.getJSON('/contact/json', {page: pagina}, function (data) {
-            if (data) {
-                data.data.forEach(function (contact) {
-                    montaLinha(contact);
-                    montarPaginator(data);
-                    $("#paginator>ul>li>a").click(function(){
-                        carregarContatos($(this).attr('pagina'));
-                    })
-                });
-            }
-        });
+        let search = $('#search').val();
+        if (search) {
+            $('#tbody').html('');
+            $.getJSON('/contact/jsonSearch/' + search, {page: pagina}, function (data) {
+                if (data) {
+                    data.data.forEach(function (contact) {
+                        montaLinha(contact);
+                        montarPaginator(data);
+                        $("#paginator>ul>li>a").click(function(){
+                            carregarContatos($(this).attr('pagina'));
+                        })
+                    });
+                }
+            });
+        } else {
+            $('#tbody').html('');
+            $.getJSON('/contact/json', {page: pagina}, function (data) {
+                if (data) {
+                    data.data.forEach(function (contact) {
+                        montaLinha(contact);
+                        montarPaginator(data);
+                        $("#paginator>ul>li>a").click(function(){
+                            carregarContatos($(this).attr('pagina'));
+                        })
+                    });
+                }
+            });
+        }
     }
 
     function montaLinha(contact) {
@@ -261,6 +277,15 @@
         $('#city').val('');
         $('#state').val('');
         $('#contactModal').modal('show');
+    });
+
+
+    $('#search').keyup(function () {
+        $('#searchForm').submit(function (e) {
+            e.preventDefault();
+        });
+
+        carregarContatos(1);
     });
 
     function editarContato(id) {
@@ -374,8 +399,5 @@
             }
         });
     }
-
-
-
 </script>
 @endsection

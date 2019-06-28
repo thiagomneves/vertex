@@ -20,7 +20,13 @@ class ContactController extends Controller
 
     public function indexJson()
     {
-        $contacts = Contact::paginate(1);
+        $contacts = Contact::paginate(10);
+        return $contacts->toJson();
+    }
+
+    public function indexJsonSearch($search)
+    {
+        $contacts = Contact::orWhere('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%')->paginate(10);
         return $contacts->toJson();
     }
 
