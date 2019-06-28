@@ -11,7 +11,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    <link href="/{{asset('css/app.css')}}" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 
 </head>
 <body>
@@ -21,7 +21,7 @@
 @hassection('modal')
     @yield('modal')
 @endif
-<script src="/{{asset('js/app.js')}}"></script>
+<script src="/js/app.js"></script>
 
 @hassection('javascript')
     @yield('javascript')
